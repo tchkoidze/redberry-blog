@@ -10,6 +10,7 @@ export default {
         "blue-magenta": "#5D37F3",
         black: "#1A1A1F",
         "ghost-white": "#F3F2FA",
+        "bg-black": "rgba(26, 26, 31, 0.24)",
       },
     },
   },

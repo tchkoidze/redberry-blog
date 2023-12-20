@@ -12,8 +12,10 @@ interface Category {
 const Home: React.FC = () => {
   const [categories, setCategories] = useState<Category[] | undefined>();
 
+  const [blogs, setBlogs] = useState<[] | null>();
+
   const token =
-    "12e12dd275cca1deb8fe8d79cc61874d2c24c90c463ea3ccb2361c9820c66e20";
+    "f7762c8a3f35e7996c89db12e3d96eb9c761316b407aafb56d6515c958c8319b";
 
   /*const getCategories = () => {
     axios
@@ -40,19 +42,36 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     getCategories();
+    getAllBlogs();
   }, []);
 
-  console.log(categories);
+  const getAllBlogs = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.blog.redberryinternship.ge/api/blogs",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log(response.data);
+      setBlogs(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   return (
-    <main className="bg-ghost-white">
-      <div className="flex items-center justify-center gap-[426px] py-16">
+    <main
+      className="bg-ghost-white h-[calc(100%-80px)] px-[76px]"
+      style={{ minHeight: "calc(100vh - 80px)" }}
+    >
+      <div className="flex items-center justify- justify-between  py-16">
         <h1 className="text-black font-bold text-[64px] leading-[72px]">
           ბლოგი
         </h1>
         <img src={bg} alt="background-img" />
       </div>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-wrap justify-center gap-[24px]">
         {categories?.map((category) => (
           <button
             key={category.id}
@@ -66,6 +85,7 @@ const Home: React.FC = () => {
           </button>
         ))}
       </div>
+      <section>{blogs?.length && "good"}</section>
     </main>
   );
 };
