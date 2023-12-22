@@ -19,6 +19,7 @@ export default {
         "grey-hover": "#F9F9FA",
         "green-dark": "#14D81C",
         "green-light": "#F8FFF8",
+        "default-input-grey": "#85858D",
       },
     },
   },
