@@ -5,10 +5,27 @@ import AsyncSelect from "react-select/async";
 import logo from "../assets/images/LOGO.png";
 import axios from "axios";
 import Dropzone from "react-dropzone";
+import ImgAdd from "../svg/Img-add";
+import UploadedIcon from "../svg/Uploaded-icon";
+import { useState } from "react";
+import Close from "../svg/Close";
 
 const AddBlog = () => {
   const token =
     "f7762c8a3f35e7996c89db12e3d96eb9c761316b407aafb56d6515c958c8319b";
+
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+
+  const handleImageUpload = (acceptedFiles: any) => {
+    // Assuming you want to handle only one file
+    const uploadedFile = acceptedFiles[0];
+    console.log(acceptedFiles[0].path);
+    setUploadedImage(uploadedFile);
+  };
+
+  const handleRemoveImage = () => {
+    setUploadedImage(null);
+  };
 
   const loadOptions = async () => {
     try {
@@ -51,50 +68,55 @@ const AddBlog = () => {
               <p className="text-black font-medium text-sm leading-5 mb-2">
                 ატვირთეთ ფოტო
               </p>
-              <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
-                {({ getRootProps, getInputProps }) => (
-                  <div
-                    className="flex items-center justify-center w-[600px]"
-                    {...getRootProps()}
-                  >
-                    <label
-                      {...getInputProps()}
-                      htmlFor="dropzone-file"
-                      className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                    >
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg
-                          className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 20 16"
-                        >
-                          <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                          />
-                        </svg>
-                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                          <span className="font-semibold">Click to upload</span>{" "}
-                          or drag and drop
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          SVG, PNG, JPG or GIF (MAX. 800x400px)
-                        </p>
-                      </div>
-                      <input
-                        id="dropzone-file"
-                        type="file"
-                        className="bg-red-200"
-                      />
-                    </label>
+              {uploadedImage ? (
+                <div className="flex items-center justify-between rounded-xl bg-[#F2F2FA] p-4">
+                  <div className="flex items-center gap-3">
+                    <UploadedIcon />
+                    <span className="text-black font-normal text-sm">
+                      {uploadedImage?.name}
+                    </span>
                   </div>
-                )}
-              </Dropzone>
+                  <button onClick={handleRemoveImage}>
+                    <Close />
+                  </button>
+                </div>
+              ) : (
+                <Dropzone onDrop={handleImageUpload}>
+                  {({ getRootProps, getInputProps, acceptedFiles }) => (
+                    <section>
+                      <div
+                        {...getRootProps()}
+                        className="flex items-center justify-center w-[600px] h-[180px] border border-default-input-grey border-dashed rounded-xl cursor-pointer bg-blue-default hover:bg-[#F1EFFB]"
+                      >
+                        <input
+                          {...getInputProps()}
+                          id="dropzone-file"
+                          className="bg-red-200"
+                        />
+
+                        <div className="flex flex-col items-center justify-center gap-6">
+                          <ImgAdd />
+                          <p className="font-normal text-sm text-black">
+                            ჩააგდეთ ფაილი აქ ან{" "}
+                            <span className="font-medium underline">
+                              აირჩიეთ ფაილი
+                            </span>
+                          </p>
+                        </div>
+                        {acceptedFiles ? (
+                          <p>
+                            {acceptedFiles.map((file) => (
+                              <li key={file.name}>
+                                {file.name} - {file.size} bytes
+                              </li>
+                            ))}
+                          </p>
+                        ) : null}
+                      </div>
+                    </section>
+                  )}
+                </Dropzone>
+              )}
             </div>
             <div className="flex gap-6 ">
               <div className=" w-6/12 ">

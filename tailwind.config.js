@@ -9,6 +9,7 @@ export default {
       colors: {
         "blue-magenta": "#5D37F3",
         "blue-focused": "#F7F7FF",
+        "blue-default": "#F4F3FF",
         black: "#1A1A1F",
         "ghost-white": "#F3F2FA",
         "bg-black": "rgba(26, 26, 31, 0.24)",
