@@ -9,13 +9,14 @@ import ImgAdd from "../svg/Img-add";
 import UploadedIcon from "../svg/Uploaded-icon";
 import { useEffect, useState } from "react";
 import Close from "../svg/Close";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { BlogForm } from "../types";
 
 const BlogData: BlogForm = {
   dropzone_file: null,
   author: "",
   header: "",
+  description: "",
   date: ",",
   category_options: [],
   email: "",
@@ -28,21 +29,50 @@ const AddBlog = () => {
 
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors, isDirty, dirtyFields, isValid },
   } = useForm({
     /* mode: "onChange"*/
+    defaultValues: {
+      dropzone_file: data?.dropzone_file || null,
+      author: data.author,
+      header: data.header,
+      description: data.description,
+      date: data.date,
+      category_options: data.category_options,
+      email: data.email,
+
+      // Add other form field initial values as needed
+    },
   });
   const handleImageUpload = (acceptedFiles: any) => {
     // Assuming you want to handle only one file
-    const uploadedFile = acceptedFiles[0];
-    console.log(acceptedFiles[0].path);
+    const uploadedFile = acceptedFiles;
+    console.log(acceptedFiles[0]);
     setUploadedImage(uploadedFile);
+    setData((prevData) => ({ ...prevData, dropzone_file: acceptedFiles[0] }));
   };
 
   const onSubmit = () => {
     console.log("good");
+    console.log(data.category_options.map((option) => option.value));
+    const formData = new FormData();
+    formData.append("author", data.author);
+    formData.append("header", data.header);
+    formData.append("description", data.description);
+    formData.append("date", data.date);
+    /*formData.append(
+      "category_options",
+      data.category_options.map((value) => value.value)
+    );*/
+    formData.append("dropzone_file", data.dropzone_file);
+    formData.append("email", data.email);
+    console.log(formData.entries());
+    for (const entry of formData.entries()) {
+      console.log(`${entry[0]}: ${entry[1]}`);
+    }
   };
   const handleRemoveImage = () => {
     setUploadedImage(null);
@@ -78,15 +108,12 @@ const AddBlog = () => {
     const parsedData = storedData ? JSON.parse(storedData) : null;
 
     //setData(parsedData);
-    setData(parsedData || BlogData);
-  }, []);*/
-  const storedData = JSON.parse(localStorage.getItem("data")!);
-  useEffect(() => {
     if (storedData) {
-      setData(storedData);
+      setData(parsedData);
     }
-  }, []);
+  }, []);*/
 
+  const storedData = JSON.parse(localStorage.getItem("data")!);
   useEffect(() => {
     if (storedData) {
       setData(storedData);
@@ -108,6 +135,14 @@ const AddBlog = () => {
     setData((prevData) => ({
       ...prevData,
       [fieldName]: value,
+    }));
+  };
+
+  const handleSelect = (fieldName: string, value: any) => {
+    setData((prevData) => ({
+      ...prevData,
+      //[fieldName]: value,
+      [fieldName]: Array.isArray(value) ? value : [value],
     }));
   };
   return (
@@ -143,7 +178,13 @@ const AddBlog = () => {
                   </button>
                 </div>
               ) : (
-                <Dropzone onDrop={handleImageUpload}>
+                <Dropzone
+                  /*onDrop={(acceptedFiles) => {
+                    console.log(acceptedFiles);
+                    handleImageUpload;
+                  }}*/
+                  onDrop={handleImageUpload}
+                >
                   {({ getRootProps, getInputProps, acceptedFiles }) => (
                     <section>
                       <div
@@ -274,6 +315,7 @@ const AddBlog = () => {
                     onChange: (e) =>
                       handleInputChange("header", e.target.value),
                   })}
+                  defaultValue={data.header}
                   name="header"
                   id="header"
                   type="text"
@@ -298,6 +340,7 @@ const AddBlog = () => {
                   onChange: (e) =>
                     handleInputChange("description", e.target.value),
                 })}
+                defaultValue={data.description}
                 name="description"
                 id="description"
                 placeholder="შეიყვნეთ აღწერა"
@@ -320,6 +363,7 @@ const AddBlog = () => {
                   {
                     onChange: (e) => handleInputChange("date", e.target.value),
                   })}
+                  value={data.date}
                   type="date"
                   id="date"
                   name="date"
@@ -330,28 +374,44 @@ const AddBlog = () => {
                 <p className="text-black font-medium text-sm block mb-2">
                   კატეგორია *
                 </p>
-                <AsyncSelect
-                  placeholder="აირჩიეთ კატეგორია"
-                  className="w-full text-purple-400"
-                  loadOptions={loadOptions}
-                  isMulti
-                  cacheOptions
-                  defaultOptions
-                  getOptionLabel={(option: { label: string; value: string }) =>
-                    option.label
-                  }
-                  getOptionValue={(option: { value: string }) => option.value}
-                  styles={{
-                    option: (provided, state) => {
-                      const optionStyle: { [key: string]: any } = {
-                        ...provided,
-                        color: (state.data as any)?.style?.color,
-                        backgroundColor: (state.data as any)?.style
-                          ?.backgroundColor,
-                      };
-                      return optionStyle;
-                    },
-                  }}
+                <Controller
+                  name="category_options"
+                  control={control}
+                  render={({ field }) => (
+                    <AsyncSelect
+                      {...field}
+                      value={data.category_options}
+                      placeholder="აირჩიეთ კატეგორია"
+                      className="w-full text-purple-400"
+                      loadOptions={loadOptions}
+                      isMulti
+                      cacheOptions
+                      defaultOptions
+                      getOptionLabel={(option: {
+                        label: string;
+                        value: string;
+                      }) => option.label}
+                      getOptionValue={(option: { value: string }) =>
+                        option.value
+                      }
+                      onChange={(selectedOptions) => {
+                        field.onChange(selectedOptions); // Update the form state
+                        handleSelect("category_options", selectedOptions); // Update the data state
+                      }}
+                      //onChange={handleInputChange}
+                      styles={{
+                        option: (provided, state) => {
+                          const optionStyle: { [key: string]: any } = {
+                            ...provided,
+                            color: (state.data as any)?.style?.color,
+                            backgroundColor: (state.data as any)?.style
+                              ?.backgroundColor,
+                          };
+                          return optionStyle;
+                        },
+                      }}
+                    />
+                  )}
                 />
               </div>
             </div>
@@ -367,6 +427,7 @@ const AddBlog = () => {
                 {
                   onChange: (e) => handleInputChange("email", e.target.value),
                 })}
+                value={data.email}
                 type="text"
                 id="email"
                 placeholder="Example@redberry.ge"
@@ -394,3 +455,15 @@ export default AddBlog;
                         ? "text-red-300"
                         : "text-green-300")
                     */
+/* const handleSelectChange = (
+    newValue: Option | Option[] | null,
+    actionMeta: ActionMeta<Option>
+  ) => {
+    // Handle the change event here
+    console.log(newValue);
+    // You can use the selected value to update your form state
+    setData((prevData) => ({
+      ...prevData,
+      category_options: newValue || [], // Assuming category_options is an array
+    }));
+  };*/
