@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import bg from "../assets/images/background-img.png";
 import React, { useEffect, useState } from "react";
 import { Blog } from "../types";

@@ -37,7 +37,7 @@ const AddBlog = () => {
     setValue,
     register,
     handleSubmit,
-    formState: { errors, isDirty, dirtyFields, isValid },
+    formState: { errors, dirtyFields },
   } = useForm({
     /*defaultValues: {
       dropzone_file: data.dropzone_file || null,

@@ -3,15 +3,6 @@ type Option = {
   label: string;
 };
 
-type CustomObject = {
-  label: string;
-  value: number;
-  style: {
-    color: string;
-    backgroundColor: string;
-  };
-};
-
 export type BlogForm = {
   dropzone_file: File | string | null;
 

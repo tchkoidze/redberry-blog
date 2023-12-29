@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Route, Routes, useLoaderData, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Header from "./layouts/Header";
 import Home from "./pages/Home";
 import Login from "./components/Login";
