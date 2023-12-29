@@ -13,11 +13,30 @@ type CustomObject = {
 };
 
 export type BlogForm = {
-  dropzone_file: null;
+  dropzone_file: File | string | null;
+
   author: string;
   header: string;
   description: string;
   date: string;
-  category_options: CustomObject[];
+  category_options: Option[];
+
   email: string;
+};
+
+type BlogCategory = {
+  id: number;
+  name: string;
+  text_color: string;
+  background_color: string;
+};
+
+export type Blog = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  publish_date: string;
+  categories: BlogCategory[];
+  author: string;
 };

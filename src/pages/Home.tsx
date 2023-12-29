@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import bg from "../assets/images/background-img.png";
 import React, { useEffect, useState } from "react";
+import { Blog } from "../types";
 
 interface Category {
   id: number;
@@ -12,7 +13,7 @@ interface Category {
 const Home: React.FC = () => {
   const [categories, setCategories] = useState<Category[] | undefined>();
 
-  const [blogs, setBlogs] = useState<[] | null>();
+  const [blogs, setBlogs] = useState<Blog[] | null>();
 
   const token =
     "f7762c8a3f35e7996c89db12e3d96eb9c761316b407aafb56d6515c958c8319b";
@@ -53,8 +54,8 @@ const Home: React.FC = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(response.data);
-      setBlogs(response.data);
+      console.log(response.data.data);
+      setBlogs(response.data.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -85,9 +86,22 @@ const Home: React.FC = () => {
           </button>
         ))}
       </div>
-      <section>{blogs?.length && "good"}</section>
+      <section>
+        {blogs &&
+          blogs.map((blog) => (
+            <div key={blog.id}>
+              <img src={blog.image} alt="" />
+              <h4 key={blog.id}>{blog.author}</h4>
+              <p>{blog.publish_date}</p>
+              <h2>{blog.title}</h2>
+              <p>{blog.description}</p>
+            </div>
+          ))}
+      </section>
     </main>
   );
 };
 
 export default Home;
+
+//blogs?.length && <div>{blogs.map((item)=>{<p>{item[id]}</p>})}</div>

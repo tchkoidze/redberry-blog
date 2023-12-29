@@ -10,7 +10,11 @@ type Input = {
   email: string;
 };
 
-const Login = (props: { setOpen: (bool: boolean) => void }) => {
+const Login = (props: {
+  setOpen: (bool: boolean) => void;
+  loged: React.MutableRefObject<boolean>;
+  setIsLoged: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [requestError, setRequestError] = useState<boolean>(false);
   const [valid, setValid] = useState<boolean>(false);
 
@@ -46,6 +50,8 @@ const Login = (props: { setOpen: (bool: boolean) => void }) => {
         console.log("Login successful");
         setRequestError(false);
         setValid(true);
+        props.loged.current = true;
+        props.setIsLoged(true);
         console.log(response);
       } else {
         // Handle other status codes (optional)
