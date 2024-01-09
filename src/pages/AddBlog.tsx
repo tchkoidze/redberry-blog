@@ -118,7 +118,7 @@ const AddBlog = () => {
       console.log(`${entry[0]}: ${entry[1]}`);
     }
     axios
-      .post("https://api.blog.redberryinternship.ge/api/blogss", formData, {
+      .post("https://api.blog.redberryinternship.ge/api/blogs", formData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -126,6 +126,7 @@ const AddBlog = () => {
         console.log("Response:", response);
         if (response.status >= 200 && response.status < 300) {
           setBlogAdded(true);
+          localStorage.removeItem("data");
         }
       })
       .catch((error) => {

@@ -2,6 +2,9 @@ import axios from "axios";
 import bg from "../assets/images/background-img.png";
 import React, { useEffect, useState } from "react";
 import { Blog } from "../types";
+import { Link } from "react-router-dom";
+import LinkArrow from "../svg/LinkArrow";
+import LinesEllipsis from "react-lines-ellipsis";
 
 interface Category {
   id: number;
@@ -86,15 +89,68 @@ const Home: React.FC = () => {
           </button>
         ))}
       </div>
-      <section>
+      <section className="flex flex-wrap gap-x-8 gap-y-14 mt-16 pb-[66px]">
         {blogs &&
           blogs.map((blog) => (
-            <div key={blog.id}>
-              <img src={blog.image} alt="" />
-              <h4 key={blog.id}>{blog.author}</h4>
-              <p>{blog.publish_date}</p>
-              <h2>{blog.title}</h2>
-              <p>{blog.description}</p>
+            // Repeat the rendering code for each blog four times
+
+            <div key={`${blog.id}`} className="">
+              <img
+                src={blog.image}
+                alt="img"
+                className="object-cover w-[408px] h-[328px] rounded-xl"
+              />
+              <div className="flex flex-col gap-4 mt-6">
+                <div>
+                  <h4
+                    key={`${blog.id}`}
+                    className="text-black font-medium text-base leading-5"
+                  >
+                    {blog.author}
+                  </h4>
+                  <p className="text-default-input-grey font-normal text-xs mt-2">
+                    {blog.publish_date}
+                  </p>
+                </div>
+
+                <h2 className="text-black font-medium text-xl max-w-[408px]">
+                  {blog.title}
+                </h2>
+
+                <ul
+                  className="flex gap-4 font-medium text-xs overflow-x-scroll max-w-[408px] flex-shrink-0 no-scrollbar"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
+                  {blog.categories.map((category) => (
+                    <li
+                      key={category.id}
+                      className="rounded-[30px] px-2.5 py-1.5"
+                      style={{
+                        backgroundColor: category.background_color,
+                        color: category.text_color,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {category.title}
+                    </li>
+                  ))}
+                </ul>
+                <div className="max-w-[408px]">
+                  <LinesEllipsis
+                    text={blog.description}
+                    maxLine="2"
+                    ellipsis="..."
+                  ></LinesEllipsis>
+                </div>
+
+                <Link
+                  to={`/blogs/${blog.id}`}
+                  className="flex items-center text-blue-magenta font-medium text-sm"
+                >
+                  <span>სრულად ნახვა</span>
+                  <LinkArrow />
+                </Link>
+              </div>
             </div>
           ))}
       </section>
@@ -105,3 +161,88 @@ const Home: React.FC = () => {
 export default Home;
 
 //blogs?.length && <div>{blogs.map((item)=>{<p>{item[id]}</p>})}</div>
+
+/*
+{blogs &&
+          blogs.map((blog) => (
+            <div key={blog.id}>
+              <img
+                src={blog.image}
+                alt="img"
+                className="object-cover w-[400px] h-[328px] "
+              />
+              <h4 key={blog.id}>{blog.author}</h4>
+              <p>{blog.publish_date}</p>
+              <h2>{blog.title}</h2>
+              <p>{blog.description}</p>
+              <ul>
+                {blog.categories.map((category) => (
+                  <li key={category.id}>{category.title}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+*/
+
+/*
+{blogs &&
+          blogs.map((blog) =>
+            // Repeat the rendering code for each blog four times
+            Array.from({ length: 4 }).map((_, index) => (
+              <div key={`${blog.id}_${index}`}>
+                <img
+                  src={blog.image}
+                  alt="img"
+                  className="object-cover w-[400px] h-[328px] "
+                />
+                <div className="flex flex-col gap-4 mt-6">
+                  <div>
+                    <h4
+                      key={`${blog.id}_${index}`}
+                      className="text-black font-medium text-base leading-5"
+                    >
+                      {blog.author}
+                    </h4>
+                    <p className="text-default-input-grey font-normal text-xs mt-2">
+                      {blog.publish_date}
+                    </p>
+                  </div>
+
+                  <h2 className="text-black font-medium text-xl">
+                    {blog.title}
+                  </h2>
+
+                  // Loop through categories 
+                  <ul className="flex gap-4 font-medium text-xs">
+                    {blog.categories.map((category) => (
+                      <li
+                        key={category.id}
+                        className="rounded-[30px] px-2.5 py-1.5"
+                        style={{
+                          backgroundColor: category.background_color,
+                          color: category.text_color,
+                        }}
+                      >
+                        {category.title}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-[#404049] font-normal text-base leading-7">
+                    {blog.description}
+                  </p>
+                  <Link
+                    to="#"
+                    className="flex items-center text-blue-magenta font-medium text-sm"
+                  >
+                    <span>სრულად ნახვა</span>
+                    <LinkArrow />
+                  </Link>
+                </div>
+              </div>
+            ))
+          )}
+*/
+
+/*<p className="text-[#404049] font-normal text-base leading-7 max-w-[408px]">
+                  {blog.description}
+                </p> */

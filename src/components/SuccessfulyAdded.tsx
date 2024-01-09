@@ -12,7 +12,10 @@ const SuccessPopup = () => {
             src={cross}
             alt="cross"
             className="ml-auto rounded-[30px] hover:bg-[#F5F4F9] active:bg-[#EBEAEF]"
-            onClick={() => navigate("/")}
+            onClick={() => {
+              navigate("/");
+              localStorage.removeItem("data");
+            }}
           />
         </div>
         <div className="px-6 pt-5 pb-10">
@@ -21,7 +24,10 @@ const SuccessPopup = () => {
             ჩანაწი წარმატებით დაემატა
           </h2>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => {
+              navigate("/");
+              localStorage.removeItem("data");
+            }}
             className="w-full text-white font-medium text-sm leading-5 rounded-lg bg-blue-magenta py-2.5 mt-12"
           >
             მთავარ გვერდზე დაბრუნება
