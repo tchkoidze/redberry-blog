@@ -7,8 +7,6 @@ import { Blog as BlogType } from "../types";
 import LinkArrow from "../svg/LinkArrow";
 
 import LinesEllipsis from "react-lines-ellipsis";
-import previous from "../assets/images/Arrow-left.svg";
-import next from "../assets/images/Arrow-right.svg";
 
 interface BackgroundObject {
   background_color: string;
@@ -32,13 +30,13 @@ const Blog = () => {
   const [data, setData] = useState<BlogPost | null>();
   const [blogs, setBlogs] = useState<BlogType[] | null>();
   const [startIndex, setStartIndex] = useState(0);
-  const [lastIndex, setLastIndex] = useState(4);
-  const [currentPage, setCurrentPage] = useState(1);
+  //const [lastIndex, setLastIndex] = useState(4);
+  //const [currentPage, setCurrentPage] = useState(1);
   const [filteredBlogs, setFilteredBlogs] = useState<BlogType[] | undefined>(
     []
   );
   let d: BlogType[] | undefined;
-  const blogsPerPage = 4;
+  //const blogsPerPage = 4;
   const token =
     "f7762c8a3f35e7996c89db12e3d96eb9c761316b407aafb56d6515c958c8319b";
   let { id } = useParams();
@@ -60,8 +58,8 @@ const Blog = () => {
   };*/
 
   // Calculate the indexes of the blogs to be shown on the current page
-  const indexOfLastBlog = currentPage * blogsPerPage;
-  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  //const indexOfLastBlog = currentPage * blogsPerPage;
+  //const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   //const currentBlogs = filteredBlogs?.slice(indexOfFirstBlog, indexOfLastBlog);
   const currentBlogs = filteredBlogs?.slice(startIndex, startIndex + 4);
 

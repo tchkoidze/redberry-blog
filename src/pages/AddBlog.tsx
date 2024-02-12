@@ -542,7 +542,7 @@ const AddBlog = () => {
                         }}
                         //onChange={handleInputChange}
                         styles={{
-                          control: (base: any, state) => ({
+                          control: (base: any) => ({
                             ...base,
                             borderRadius: "12px",
                             height: "44px",
