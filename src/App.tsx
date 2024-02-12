@@ -4,6 +4,7 @@ import Header from "./layouts/Header";
 import Home from "./pages/Home";
 import Login from "./components/Login";
 import AddBlog from "./pages/AddBlog";
+import Blog from "./pages/Blog";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -41,6 +42,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/addBlog" element={<AddBlog />} />
+        <Route path="/blogs/:id" element={<Blog />} />
       </Routes>
     </>
   );

@@ -17,7 +17,7 @@ export type BlogForm = {
 
 type BlogCategory = {
   id: number;
-  name: string;
+  title: string;
   text_color: string;
   background_color: string;
 };
