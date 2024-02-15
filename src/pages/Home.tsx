@@ -15,6 +15,7 @@ interface Category {
 
 const Home: React.FC = () => {
   const [categories, setCategories] = useState<Category[] | undefined>();
+  const [selectedCategory, setSelectedCategory] = useState<number[]>([]);
 
   const [blogs, setBlogs] = useState<Blog[] | null>();
 
@@ -29,7 +30,7 @@ const Home: React.FC = () => {
       })
       .catch((error) => console.error("Error fetching posts:", error));
   };*/
-
+  console.log(categories);
   const getCategories = async () => {
     try {
       const response = await axios.get(
@@ -78,12 +79,41 @@ const Home: React.FC = () => {
       <div className="flex flex-wrap justify-center gap-[24px]">
         {categories?.map((category) => (
           <button
+            onClick={() => {
+              console.log(5);
+              /*if (selectedCategory.includes(category.id)) {
+                let x = selectedCategory.filter((item) => item !== category.id);
+                setSelectedCategory(x);
+              } else {
+                setSelectedCategory((prevState) => [...prevState, category.id]);
+              }*/
+              setSelectedCategory((prevIds) => {
+                if (prevIds.includes(category.id)) {
+                  return prevIds.filter(
+                    (selectedId) => selectedId !== category.id
+                  );
+                } else {
+                  return [...prevIds, category.id];
+                }
+              });
+              console.log(selectedCategory);
+            }}
             key={category.id}
             style={{
               color: category.text_color,
-              backgroundColor: category.background_color,
+              backgroundColor: selectedCategory.includes(category.id)
+                ? `${category.background_color}50`
+                : category.background_color,
+
+              border: `2px solid ${
+                selectedCategory.includes(category.id)
+                  ? `${category.background_color}`
+                  : "transparent"
+              }`,
             }}
-            className={` px-4 py-2 rounded-[30px]`}
+            className={` px-4 py-2 rounded-[30px] ${
+              selectedCategory.includes(category.id) ? "text-red-300" : ""
+            }`}
           >
             {category.title}
           </button>
@@ -97,6 +127,13 @@ const Home: React.FC = () => {
               const today = new Date();
               return publishDate <= today; // Filter out blogs with publish date older than today
             })
+            .filter((blog) =>
+              selectedCategory.length === 0
+                ? true
+                : blog.categories.some((element) =>
+                    selectedCategory.includes(element.id)
+                  )
+            )
             .map((blog) => (
               // Repeat the rendering code for each blog four times
 
@@ -165,3 +202,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+//(prevState) => [...prevState, category.id]
