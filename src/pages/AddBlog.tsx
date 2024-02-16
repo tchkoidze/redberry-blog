@@ -558,6 +558,14 @@ const AddBlog = () => {
 
                             outline: "none",
                           }),
+                          valueContainer: (base: any) => ({
+                            ...base,
+                            overflowX: "auto",
+                            flexWrap: "nowrap",
+
+                            whiteSpace: "nowrap", // Prevent content from wrapping
+                          }),
+
                           multiValue: (provided: any, state) => ({
                             ...provided,
                             whiteSpace: "nowrap", // Prevent multi values from wrapping to new lines
@@ -567,6 +575,7 @@ const AddBlog = () => {
                             color: (state.data as any)?.style.color,
                             backgroundColor: (state.data as any)?.style
                               ?.backgroundColor,
+                            flex: "1 0 auto",
                           }),
                           multiValueLabel: (provided: any, state) => ({
                             ...provided,
