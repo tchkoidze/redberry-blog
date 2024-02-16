@@ -558,11 +558,19 @@ const AddBlog = () => {
 
                             outline: "none",
                           }),
-                          multiValue: (provided: any) => ({
+                          multiValue: (provided: any, state) => ({
                             ...provided,
                             whiteSpace: "nowrap", // Prevent multi values from wrapping to new lines
                             overflow: "hidden", // Hide any overflow
                             textOverflow: "ellipsis",
+                            borderRadius: "30px",
+                            color: (state.data as any)?.style.color,
+                            backgroundColor: (state.data as any)?.style
+                              ?.backgroundColor,
+                          }),
+                          multiValueLabel: (provided: any, state) => ({
+                            ...provided,
+                            color: (state.data as any)?.style.color,
                           }),
                           option: (provided, state) => {
                             const optionStyle: { [key: string]: any } = {
