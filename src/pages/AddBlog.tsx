@@ -545,7 +545,7 @@ const AddBlog = () => {
                           control: (base: any) => ({
                             ...base,
                             borderRadius: "12px",
-                            height: "44px",
+                            heighteight: "44px",
                             backgroundColor: "#FCFCFD",
                             borderColor: `${
                               dirtyFields.category_options &&
@@ -560,22 +560,30 @@ const AddBlog = () => {
                           }),
                           valueContainer: (base: any) => ({
                             ...base,
-                            overflowX: "auto",
-                            flexWrap: "nowrap",
-
-                            whiteSpace: "nowrap", // Prevent content from wrapping
+                            //overflowX: "auto",
+                            //flexWrap: "nowrap",
+                            //whiteSpace: "nowrap",
+                            //WebkitOverflowScrolling: "auto",
+                            //"&::-webkit-scrollbar": {
+                            //  display:
+                            //    "none" /* Hide scrollbar for Chrome, Safari, and Opera */,
+                            //},
+                            //scrollbarWidth: "thin",
+                            //msOverflowStyle: "none",
+                            //display: "flex",
+                            //overflowX: "scroll",
+                            //flexShrink: 0,
                           }),
 
                           multiValue: (provided: any, state) => ({
                             ...provided,
-                            whiteSpace: "nowrap", // Prevent multi values from wrapping to new lines
+                            //whiteSpace: "nowrap", // Prevent multi values from wrapping to new lines
                             overflow: "hidden", // Hide any overflow
                             textOverflow: "ellipsis",
                             borderRadius: "30px",
                             color: (state.data as any)?.style.color,
                             backgroundColor: (state.data as any)?.style
                               ?.backgroundColor,
-                            flex: "1 0 auto",
                           }),
                           multiValueLabel: (provided: any, state) => ({
                             ...provided,
