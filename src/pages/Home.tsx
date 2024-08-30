@@ -205,5 +205,3 @@ export default Home;
 //(prevState) => [...prevState, category.id]
 //just for commit
 //
-//;;
-//
